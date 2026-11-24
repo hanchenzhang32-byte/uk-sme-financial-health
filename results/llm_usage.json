@@ -1,0 +1,8 @@
+{
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "input_tokens": 83174,
+  "output_tokens": 49971,
+  "seconds": 179.5,
+  "run_at": "2026-11-24 09:45"
+}

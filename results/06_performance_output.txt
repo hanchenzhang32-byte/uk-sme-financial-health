@@ -1,0 +1,39 @@
+SET
+DROP INDEX
+DROP INDEX
+ANALYZE
+--- before indexes ---
+                                          QUERY PLAN                                           
+-----------------------------------------------------------------------------------------------
+ Gather (actual time=120.828..120.974 rows=8 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Parallel Hash Join (actual time=104.380..115.436 rows=3 loops=3)
+         Hash Cond: (r.filing_id = f.filing_id)
+         ->  Parallel Seq Scan on raw_facts r (actual time=0.019..101.256 rows=159227 loops=3)
+               Filter: (tag = ANY ('{CurrentAssets,Creditors,NetAssetsLiabilities}'::text[]))
+               Rows Removed by Filter: 614736
+         ->  Parallel Hash (actual time=1.313..1.314 rows=0 loops=3)
+               Buckets: 1024  Batches: 1  Memory Usage: 40kB
+               ->  Parallel Seq Scan on filings f (actual time=2.776..3.916 rows=1 loops=1)
+                     Filter: (company_number = '10722905'::bpchar)
+                     Rows Removed by Filter: 84150
+ Planning Time: 0.259 ms
+ Execution Time: 120.997 ms
+(15 rows)
+
+CREATE INDEX
+CREATE INDEX
+ANALYZE
+--- after indexes ---
+                                                         QUERY PLAN                                                         
+----------------------------------------------------------------------------------------------------------------------------
+ Nested Loop (actual time=0.042..0.050 rows=8 loops=1)
+   ->  Index Scan using idx_filings_company on filings f (actual time=0.021..0.021 rows=1 loops=1)
+         Index Cond: (company_number = '10722905'::bpchar)
+   ->  Index Scan using idx_raw_facts_filing_tag on raw_facts r (actual time=0.017..0.022 rows=8 loops=1)
+         Index Cond: ((filing_id = f.filing_id) AND (tag = ANY ('{CurrentAssets,Creditors,NetAssetsLiabilities}'::text[])))
+ Planning Time: 0.450 ms
+ Execution Time: 0.072 ms
+(7 rows)
+

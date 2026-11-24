@@ -1,0 +1,18 @@
+SET
+CREATE TABLE
+TRUNCATE TABLE
+INSERT 0 21
+CREATE VIEW
+ companies | pct_negative_net_assets_as_tagged | pct_negative_net_assets_corrected 
+-----------+-----------------------------------+-----------------------------------
+     71169 |                              20.1 |                              25.0
+(1 row)
+
+COPY 18
+COPY 4
+             status              | companies | pct_negative_net_assets 
+---------------------------------+-----------+-------------------------
+ Active                          |     69941 |                    24.8
+ Active - Proposal to Strike off |      1203 |                    36.9
+(2 rows)
+

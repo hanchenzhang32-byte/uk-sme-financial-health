@@ -1,0 +1,23 @@
+SET
+TRUNCATE TABLE
+CREATE VIEW
+CREATE VIEW
+INSERT 0 103
+INSERT 0 0
+INSERT 0 4481
+INSERT 0 260
+INSERT 0 3669
+INSERT 0 66
+INSERT 0 1225
+INSERT 0 69
+          check_name           | filings_flagged | pct_of_filings 
+-------------------------------+-----------------+----------------
+ sign_error_net_current_assets |            4481 |           5.32
+ sign_error_net_assets         |            3669 |           4.36
+ missing_net_assets            |            1225 |           1.46
+ net_current_assets_mismatch   |             260 |           0.31
+ duplicate_filing              |             103 |           0.12
+ non_gbp_currency              |              69 |           0.08
+ possible_unit_error           |              66 |           0.08
+(7 rows)
+

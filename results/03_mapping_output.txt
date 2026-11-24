@@ -1,0 +1,58 @@
+SET
+                             tag                             | facts  | pct_of_all_facts 
+-------------------------------------------------------------+--------+------------------
+ Equity                                                      | 284271 |             12.2
+ Creditors                                                   | 220030 |              9.5
+ AverageNumberEmployeesDuringPeriod                          | 137202 |              5.9
+ NetAssetsLiabilities                                        | 136112 |              5.9
+ NetCurrentAssetsLiabilities                                 | 129814 |              5.6
+ PropertyPlantEquipment                                      | 127402 |              5.5
+ CurrentAssets                                               | 121539 |              5.2
+ TotalAssetsLessCurrentLiabilities                           | 121506 |              5.2
+ AccumulatedDepreciationImpairmentPropertyPlantEquipment     |  87702 |              3.8
+ PropertyPlantEquipmentGrossCost                             |  87031 |              3.7
+ FixedAssets                                                 |  72309 |              3.1
+ Debtors                                                     |  68786 |              3.0
+ CashBankOnHand                                              |  63773 |              2.7
+ IncreaseFromDepreciationChargeForYearPropertyPlantEquipment |  41990 |              1.8
+ OtherCreditors                                              |  34619 |              1.5
+(15 rows)
+
+INSERT 0 13
+INSERT 0 21
+INSERT 0 1056948
+ distinct_tags | tags_mapped | pct_facts_with_mapped_tag 
+---------------+-------------+---------------------------
+           929 |          13 |                      60.7
+(1 row)
+
+       item_code        | filings_with_item | pct_of_filings 
+------------------------+-------------------+----------------
+ net_assets             |             82926 |           98.5
+ employees              |             73574 |           87.4
+ net_current_assets     |             69763 |           82.9
+ total_assets_less_cl   |             65017 |           77.3
+ current_assets         |             64934 |           77.2
+ creditors_within_1y    |             61972 |           73.6
+ fixed_assets           |             38334 |           45.6
+ cash                   |             33203 |           39.5
+ creditors_after_1y     |             24746 |           29.4
+ debtors                |             23915 |           28.4
+ accruals_outside_cl    |             10681 |           12.7
+ provisions             |              9816 |           11.7
+ prepayments_outside_ca |              8702 |           10.3
+(13 rows)
+
+CREATE VIEW
+    tag    |                                                       dimensions                                                       | facts 
+-----------+------------------------------------------------------------------------------------------------------------------------+-------
+ Equity    | EquityClassesDimension=ShareCapital                                                                                    | 63164
+ Equity    | EquityClassesDimension=RetainedEarningsAccumulatedLosses                                                               | 52782
+ Creditors |                                                                                                                        | 18119
+ Equity    | RestatementsFirstTimeAdoptionDimension=PreviouslyStatedAmount                                                          |  5264
+ Equity    | EquityClassesDimension=RetainedEarningsAccumulatedLosses;RestatementsFirstTimeAdoptionDimension=PreviouslyStatedAmount |  5241
+ Equity    | EquityClassesDimension=ShareCapital;RestatementsFirstTimeAdoptionDimension=PreviouslyStatedAmount                      |  4807
+ Equity    | EquityClassesDimension=RevaluationReserve                                                                              |  3167
+ Equity    | EquityClassesDimension=SharePremium                                                                                    |  2834
+(8 rows)
+
