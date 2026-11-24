@@ -1,21 +1,21 @@
-tag,dimensions,facts,llm_label,confidence,correct
-PrepaymentsAccruedIncome,,68,prepayments_outside_ca,0.3,
-CashCashEquivalents,,91,cash,0.7,
-FixedAssets,GroupCompanyDataDimension=Consolidated,14,fixed_assets,0.6,
-Debtors,FinancialInstrumentCurrentNon-currentDimension=CurrentFinancialInstruments;GroupCompanyDataDimension=Consolidated;MaturitiesOrExpirationPeriodsDimension=WithinOneYear,15,debtors,0.6,
-BalancesWithBanks,GroupCompanyDataDimension=Consolidated,2,cash,0.3,
-CashCashEquivalentsCashFlowValue,,68,cash,0.5,
-Debtors,FinancialInstrumentCurrentNon-currentDimension=CurrentFinancialInstruments;GroupCompanyDataDimension=Consolidated,13,debtors,0.5,
-DeferredTaxLiabilities,,71,provisions,0.4,
-CurrentAssets,GroupCompanyDataDimension=Consolidated,14,current_assets,0.65,
-CurrentLiabilities,,2,creditors_within_1y,0.5,
-TradeOtherReceivables,,6,debtors,0.5,
-CashCashEquivalents,GroupCompanyDataDimension=Consolidated,46,cash,0.5,
-Debtors,GroupCompanyDataDimension=Consolidated,2,debtors,0.4,
-FurtherItemDebtorsComponentTotalDebtors,X-AnalysisDimension=,3,debtors,0.4,
-Equity,EquityClassesDimension=TotalEquityAttributableToOwnersParentBeforeNon-controllingInterests;GroupCompanyDataDimension=Consolidated,4,net_assets,0.5,
-NetCurrentAssetsLiabilities,GroupCompanyDataDimension=Consolidated,14,net_current_assets,0.6,
-Provisions,,47,provisions,0.9,
-ProvisionsForLiabilitiesBalanceSheetSubtotal,GroupCompanyDataDimension=Consolidated,4,provisions,0.6,
-Equity,GroupCompanyDataDimension=Consolidated,46,net_assets,0.6,
-Non-currentAssets,,2,fixed_assets,0.6,
+tag,dimensions,facts,llm_label,confidence,correct,reason
+PrepaymentsAccruedIncome,,68,prepayments_outside_ca,0.3,no,the separate-line prepayments have their own tag
+CashCashEquivalents,,91,cash,0.7,yes,same item under an IFRS or alternative name
+FixedAssets,GroupCompanyDataDimension=Consolidated,14,fixed_assets,0.6,no,group (consolidated) figure
+Debtors,FinancialInstrumentCurrentNon-currentDimension=CurrentFinancialInstruments;GroupCompanyDataDimension=Consolidated;MaturitiesOrExpirationPeriodsDimension=WithinOneYear,15,debtors,0.6,no,group figure
+BalancesWithBanks,GroupCompanyDataDimension=Consolidated,2,cash,0.3,no,group figure and only bank balances
+CashCashEquivalentsCashFlowValue,,68,cash,0.5,no,"cash flow statement value, not balance sheet"
+Debtors,FinancialInstrumentCurrentNon-currentDimension=CurrentFinancialInstruments;GroupCompanyDataDimension=Consolidated,13,debtors,0.5,no,group figure
+DeferredTaxLiabilities,,71,provisions,0.4,no,deferred tax is only part of provisions
+CurrentAssets,GroupCompanyDataDimension=Consolidated,14,current_assets,0.65,no,group figure
+CurrentLiabilities,,2,creditors_within_1y,0.5,yes,same item under an IFRS or alternative name
+TradeOtherReceivables,,6,debtors,0.5,yes,same item under an IFRS or alternative name
+CashCashEquivalents,GroupCompanyDataDimension=Consolidated,46,cash,0.5,no,group figure
+Debtors,GroupCompanyDataDimension=Consolidated,2,debtors,0.4,no,group figure
+FurtherItemDebtorsComponentTotalDebtors,X-AnalysisDimension=,3,debtors,0.4,no,"one component of debtors, not the total"
+Equity,EquityClassesDimension=TotalEquityAttributableToOwnersParentBeforeNon-controllingInterests;GroupCompanyDataDimension=Consolidated,4,net_assets,0.5,no,group figure
+NetCurrentAssetsLiabilities,GroupCompanyDataDimension=Consolidated,14,net_current_assets,0.6,no,group figure
+Provisions,,47,provisions,0.9,yes,provisions total
+ProvisionsForLiabilitiesBalanceSheetSubtotal,GroupCompanyDataDimension=Consolidated,4,provisions,0.6,no,group figure
+Equity,GroupCompanyDataDimension=Consolidated,46,net_assets,0.6,no,group figure
+Non-currentAssets,,2,fixed_assets,0.6,yes,same item under an IFRS or alternative name
