@@ -2,4 +2,5 @@ lxml
 matplotlib
 numpy
 pandas
+pytest
 scikit-learn

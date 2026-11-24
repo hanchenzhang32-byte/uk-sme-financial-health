@@ -37,6 +37,15 @@ docker run -d --name sme-pg -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 post
 | 10 | `scripts/evaluate_mapping.py` | Compares the rules and the LLM against a hand-labelled answer key |
 | 11 | `sql/07_features.sql` | Builds the prediction dataset: last year's figures as inputs, this year's net assets as the label |
 | 12 | `scripts/train_distress.py` | Trains and tests the distress models, writes `results/distress_metrics.md` |
+| 13 | `scripts/export_app_data.py` | Exports the data for the [SME Review](https://github.com/hanchenzhang32-byte/sme-review-app) web app (optional) |
+
+## Tests
+
+```sh
+python -m pytest
+```
+
+15 unit tests in `tests/` cover the iXBRL parser (number formats, scale, the `sign` attribute, contexts and dimensions, and a small end-to-end zip), reading the LLM's answers, and the top 10% capture metric. One test records that brackets alone do not make a figure negative, which is the cause of the sign errors found below.
 
 ## Results
 
@@ -52,6 +61,8 @@ docker run -d --name sme-pg -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 post
 | LLM, no hand-written rules | 92/98 | 93.2% |
 
 All 6 LLM mistakes were the `FinancialInstrumentCurrentNon-currentDimension` style, which the model read as a split of the total rather than the total itself. Most came with low confidence, so sending answers below 0.6 to a person leaves 94 automatic mappings with 2 errors and 4 for review. In the 1,033 rarer combinations the LLM suggested 20 extra mappings (532 figures), for example IFRS names such as `CurrentLiabilities`. Checked by hand, only 5 of the 20 were right (`results/llm_tail_sample_for_review.csv`). 10 of the 15 wrong ones were consolidated group figures: the model found the right item but missed that the number covers a whole group, not one company. The others were parts of a total or cash flow statement values. So the LLM is a good first pass for common tags, but rare tags still need a person to check them. The run took 3 minutes (83,174 input and 49,971 output tokens). Full output: `results/mapping_comparison.md`.
+
+**Auditing.** The rules are easier to audit: each rule is one row in `tag_mappings`, and every figure in `financials` keeps the `source_tag` it came from, so any number can be traced back. The LLM only returns a label and a confidence, and 2 of its 6 mistakes came with confidence of 0.8 or more, so a confidence cut-off alone does not catch every error.
 
 **Data quality.** Checks on the current year balance sheet:
 
