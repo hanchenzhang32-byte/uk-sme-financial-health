@@ -1,0 +1,68 @@
+{
+  "test": [
+    {
+      "model": "Rule: lowest equity ratio",
+      "pr_auc": 0.11820284953809532,
+      "roc_auc": 0.721994465752338,
+      "top10_flagged": 959,
+      "top10_caught": 144,
+      "top10_capture_rate": 0.27852998065764023,
+      "top10_precision": 0.15015641293013557,
+      "top10_lift": 2.784718930704332
+    },
+    {
+      "model": "Logistic regression",
+      "pr_auc": 0.14324309395772394,
+      "roc_auc": 0.7709750310627084,
+      "top10_flagged": 959,
+      "top10_caught": 158,
+      "top10_capture_rate": 0.3056092843326886,
+      "top10_precision": 0.16475495307612095,
+      "top10_lift": 3.0554554934116975
+    },
+    {
+      "model": "Gradient boosting",
+      "pr_auc": 0.16209327672745752,
+      "roc_auc": 0.8055813508178655,
+      "top10_flagged": 959,
+      "top10_caught": 170,
+      "top10_capture_rate": 0.3288201160541586,
+      "top10_precision": 0.1772679874869656,
+      "top10_lift": 3.2875154043037256
+    },
+    {
+      "model": "Gradient boosting, no sign fix",
+      "pr_auc": 0.15784154239147982,
+      "roc_auc": 0.792173476935766,
+      "top10_flagged": 959,
+      "top10_caught": 165,
+      "top10_capture_rate": 0.3191489361702128,
+      "top10_precision": 0.17205422314911367,
+      "top10_lift": 3.1908237747653807
+    }
+  ],
+  "cv": [
+    {
+      "model": "Logistic regression",
+      "pr_auc": 0.14236469005912328,
+      "roc_auc": 0.7698321105303756,
+      "top10_flagged": 2876,
+      "top10_caught": 464,
+      "top10_capture_rate": 0.29896907216494845,
+      "top10_precision": 0.16133518776077885,
+      "top10_lift": 2.9901065339890742
+    },
+    {
+      "model": "Gradient boosting",
+      "pr_auc": 0.14454984015052,
+      "roc_auc": 0.7856907428651095,
+      "top10_flagged": 2876,
+      "top10_caught": 460,
+      "top10_capture_rate": 0.2963917525773196,
+      "top10_precision": 0.1599443671766342,
+      "top10_lift": 2.9643297535236512
+    }
+  ],
+  "n": 38352,
+  "positives": 2069
+}

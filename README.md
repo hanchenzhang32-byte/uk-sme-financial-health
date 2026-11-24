@@ -35,6 +35,8 @@ docker run -d --name sme-pg -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 post
 | 8 | `sql/06_performance.sql` | Query time before and after indexes |
 | 9 | `scripts/llm_map.py` | Optional: asks an LLM to map every tag (needs an API key in `.env`) |
 | 10 | `scripts/evaluate_mapping.py` | Compares the rules and the LLM against a hand-labelled answer key |
+| 11 | `sql/07_features.sql` | Builds the prediction dataset: last year's figures as inputs, this year's net assets as the label |
+| 12 | `scripts/train_distress.py` | Trains and tests the distress models, writes `results/distress_metrics.md` |
 
 ## Results
 
@@ -82,6 +84,31 @@ Full table: `results/by_sector.csv`. By company age, 31.1% of companies aged 2 t
 
 **Performance.** With 2.3 million rows in `raw_facts`, looking up one company's figures took about 125 ms with sequential scans and under 0.1 ms after adding indexes on `filings(company_number)` and `raw_facts(filing_id, tag)` (`results/06_performance_output.txt`).
 
+## Predicting distress one year ahead
+
+Every set of accounts also shows last year's balance sheet. So I can ask: using only last year's figures, which companies will have negative net assets this year?
+
+- **Who is included.** 38,352 trading companies with positive net assets last year and total assets of at least £1,000. 2,069 of them (5.4%) had negative net assets this year.
+- **No leakage.** Every input comes from last year's balance sheet (equity ratio, current ratio, debt ratios, size), plus sector and company age. Nothing from this year is used as an input. The sign fix from the checks above is applied to both years.
+- **Models.** A one-line rule (rank by lowest equity ratio), logistic regression, and gradient boosting (scikit-learn `HistGradientBoostingClassifier`). 75/25 stratified split, 5-fold cross-validation on the training part.
+- **Metrics.** Only 5.4% of companies are positive, so accuracy is not useful. I report PR-AUC and how many distressed companies are caught in the 10% the model ranks as riskiest.
+
+| Test set (9,588 companies, 517 distressed) | PR-AUC | ROC-AUC | Caught in riskiest 10% |
+| --- | --- | --- | --- |
+| Random | 0.054 | 0.500 | 10% |
+| Rule: lowest equity ratio | 0.118 | 0.722 | 27.9% |
+| Logistic regression | 0.143 | 0.771 | 30.6% |
+| Gradient boosting | 0.162 | 0.806 | 32.9% |
+
+![Precision and recall](results/distress_pr_curve.png)
+
+What I learned:
+
+- Gradient boosting catches about a third of the companies that slip into negative net assets by flagging 10% of them, 3.3 times better than random. It beats the simple rule, but the gap to logistic regression is small and the bootstrap intervals overlap (`results/distress_metrics.md`), so the honest conclusion is that most of the signal is in a few balance sheet ratios.
+- Last year's equity ratio and company size matter most (permutation importance, `results/distress_importance.csv`). Sector, age and cash add very little.
+- The sign fix changed 290 of 28,764 training labels (1%). It made no clear difference to the model, even though it moves the share of companies with negative net assets from 20.1% to 25.0%. Data quality problems matter more for headline statistics than for this ranking model.
+- Balance sheet data alone has a ceiling: PR-AUC of 0.16 means most flagged companies are fine. Profit and loss, payment and filing behaviour data would be needed to do much better.
+
 ## Limitations
 
 - Ten days of filings, so the sample leans towards companies with filing deadlines at the end of November.
@@ -94,4 +121,4 @@ Full table: `results/by_sector.csv`. By company age, 31.1% of companies aged 2 t
 ## Next steps
 
 - Use a full year of filings from the monthly archive and check which companies were later dissolved or entered liquidation.
-- Use the prior year figures in each filing to look at changes, after fixing sign errors in both years.
+- Test the distress model on accounts filed in a later month, to check it holds up over time and not just on a random split.

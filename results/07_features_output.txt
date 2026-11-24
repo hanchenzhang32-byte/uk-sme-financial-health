@@ -1,0 +1,10 @@
+SET
+DROP VIEW
+CREATE VIEW
+CREATE VIEW
+ companies | turned_negative | pct_turned_negative | companies_as_tagged | pct_turned_negative_as_tagged 
+-----------+-----------------+---------------------+---------------------+-------------------------------
+     38352 |            2069 |                5.39 |               40289 |                          4.17
+(1 row)
+
+COPY 48488

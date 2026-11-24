@@ -17,6 +17,8 @@ psql -v ON_ERROR_STOP=1 -f sql/04_checks.sql     > results/04_checks_output.txt
 psql -v ON_ERROR_STOP=1 -f sql/05_analysis.sql   > results/05_analysis_output.txt
 psql -v ON_ERROR_STOP=1 -f sql/06_performance.sql > results/06_performance_output.txt
 python3 scripts/make_charts.py
+psql -v ON_ERROR_STOP=1 -f sql/07_features.sql   > results/07_features_output.txt
+python3 scripts/train_distress.py
 # Optional, needs an API key in .env:
 # python3 scripts/llm_map.py && python3 scripts/evaluate_mapping.py
 echo "Done. See results/"
